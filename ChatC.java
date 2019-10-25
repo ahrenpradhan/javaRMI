@@ -1,0 +1,28 @@
+import java.rmi.*;
+import java.rmi.NotBoundException;
+import java.rmi.RemoteException;
+import java.rmi.registry.LocateRegistry;
+import java.rmi.registry.Registry;
+import java.util.*;
+
+public class Client {
+    public static void main(String[] args) throws RemoteException{
+        Client c =new Client();
+        c.connectRemote();
+    }
+    private void connectRemote()throws RemoteException{
+        try{
+            Scanner sc=new Scanner(System.in);
+            Registry reg=LocateRegistry.getRegistry("localhost",9989);
+            //in case we hv 2 diff machine we cas use ip address of that machine in place of local host
+            adder ad=(adder)reg.lookup("hi Server");
+            System.out.println("ENTER THE TWO NO::");
+            int a=sc.nextInt();
+            int b=sc.nextInt();
+            System.out.println("SUM="+ad.add(a, b));
+        }
+        catch(NotBoundException|RemoteException e){
+            System.out.println("exception"+e);
+        }
+    }
+}
